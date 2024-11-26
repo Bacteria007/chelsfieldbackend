@@ -2,40 +2,37 @@ import { Request, Response, NextFunction, RequestHandler } from "express";
 import { ImageSlider } from "../models/ImageSlider";
 
 // Create Slider Image
-export const createSliderImage: RequestHandler = async (
-    req,
-    res,
-    next
-): Promise<void> => {
+export const createSliderImage = async (req, res, next) => {
     try {
-        const { imageUrl } = req.body;
-
-        if (!imageUrl) {
-            res
-                .status(400)
-                .json({ success: false, message: "Please provide an image URL." });
-            return;
-        }
-
-        const sliderImage = new ImageSlider({ imageUrl });
-        await sliderImage.save();
-
-        res.status(201).json({
-            success: true,
-            message: "Slider image created successfully.",
-            data: sliderImage,
-        });
+      // Check if the file was uploaded
+      if (!req.file) {
+        res.status(400).json({ success: false, message: "Image is required." });
+        return;
+      }
+  
+      // Construct the image path
+      const imageUrl = path.join("uploads/slider", req.file.filename);
+  
+      // Create a new slider image entry
+      const sliderImage = new ImageSlider({ imageUrl });
+      await sliderImage.save();
+  
+      res.status(201).json({
+        success: true,
+        message: "Slider image created successfully.",
+        data: sliderImage,
+      });
     } catch (error) {
-        next(error);
+      next(error);
     }
-};
+  };
 
 // Get all Slider Images
-export const getAllSliderImages: RequestHandler = async (
+export const getAllSliderImages = async (
     req,
     res,
     next
-): Promise<void> => {
+) => {
     try {
         const sliderImages = await ImageSlider.find();
 
@@ -50,11 +47,11 @@ export const getAllSliderImages: RequestHandler = async (
 };
 
 // Get Slider Image by ID
-export const getSliderImageById: RequestHandler = async (
+export const getSliderImageById = async (
     req,
     res,
     next
-): Promise<void> => {
+) => {
     try {
         const { id } = req.params;
         const sliderImage = await ImageSlider.findById(id);
@@ -78,11 +75,11 @@ export const getSliderImageById: RequestHandler = async (
 };
 
 // Update Slider Image
-export const updateSliderImage: RequestHandler = async (
+export const updateSliderImage = async (
     req,
     res,
     next
-): Promise<void> => {
+) => {
     try {
         const { id } = req.params;
         const { imageUrl } = req.body;
@@ -119,11 +116,11 @@ export const updateSliderImage: RequestHandler = async (
 };
 
 // Delete Slider Image
-export const deleteSliderImage: RequestHandler = async (
+export const deleteSliderImage = async (
     req,
     res,
     next
-): Promise<void> => {
+) => {
     try {
         const { id } = req.params;
 
