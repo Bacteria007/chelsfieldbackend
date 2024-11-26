@@ -1,14 +1,17 @@
-import express from 'express';
-import {
+const express = require("express");
+const path=require('path')
+const fs=require('fs')
+const SliderRouter = express.Router();
+
+const {
   createSliderImage,
   getAllSliderImages,
   getSliderImageById,
   updateSliderImage,
   deleteSliderImage,
-} from '../controllers/SliderController';
-import { uploadImage } from '../middleware/uploadfile';
+} = require("../controllers/SliderController");
+const { uploadImage } = require("../middleware/uploadfile");
 
-const SliderRouter = express.Router();
 
 // Ensure the directory exists
 const uploadPath = path.join(__dirname, "../uploads/slider");
@@ -25,4 +28,4 @@ SliderRouter.get('/slider/:id', getSliderImageById);
 SliderRouter.put('/slider/:id', updateSliderImage);
 SliderRouter.delete('/slider/:id', deleteSliderImage);
 
-export default SliderRouter;
+module.exports = SliderRouter;

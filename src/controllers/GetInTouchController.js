@@ -1,14 +1,9 @@
-import { Request, Response, NextFunction } from "express";
-import { GetInTouch } from "../models/GetInTouch";
-import * as XLSX from "xlsx";
-import { writeFileSync, existsSync, mkdirSync } from "fs";
-import path from "path";
-import sendEmail from "../utils/sendEmail";
-export const GetInTouchController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const XLSX = require("xlsx");
+const { writeFileSync, existsSync, mkdirSync } = require("fs");
+const path = require("path");
+const sendEmail = require("../utils/sendEmail");
+
+exports.GetInTouchController = async (req, res, next) => {
   const { name, email, phone, message } = req.body;
   console.log("Name:", name);
   console.log("Email:", email);
@@ -93,8 +88,6 @@ export const GetInTouchController = async (
         },
       ],
     });
-
-   
   } catch (error) {
     console.error("Failed to send email:", error);
     throw new Error("Failed to send email");

@@ -1,13 +1,14 @@
-import { NextFunction, Request, Response } from 'express';
-// import ErrorHandler from "../utils/errorHandler";
-import sendEmail from "../utils/sendEmail";
-import * as XLSX from 'xlsx';
-import { writeFileSync, existsSync, mkdirSync } from 'fs';
-import path from 'path';
-export const HireHallController = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
+// const ErrorHandler = require("../utils/errorHandler");
+const sendEmail = require("../utils/sendEmail");
+const XLSX = require('xlsx');
+const { writeFileSync, existsSync, mkdirSync } = require('fs');
+const path = require('path');
+
+
+exports.HireHallController = async (
+    req,
+    res,
+    next
 ) => {
       const { name, email, phone, bookingType, message } = req.body;
         if (!name || !email || !phone || !bookingType || !message) {

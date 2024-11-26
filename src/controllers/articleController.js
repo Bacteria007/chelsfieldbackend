@@ -1,9 +1,9 @@
-import { RequestHandler } from 'express';
-import { Article } from '../models/Aricle';
-import path from 'path';
+const express = require('express');
+const path = require('path');
+const Article = require('../models/Aricle');
 
 // Create Article
-export const createArticle = async (req, res, next) => {
+exports.createArticle = async (req, res, next) => {
   try {
     const { title, description } = req.body;
 
@@ -36,7 +36,7 @@ export const createArticle = async (req, res, next) => {
 };
 
 // Get All Articles
-export const getAllArticles = async (req, res, next) => {
+exports.getAllArticles = async (req, res, next) => {
   try {
     const articles = await Article.find();
 
@@ -51,7 +51,7 @@ export const getAllArticles = async (req, res, next) => {
 };
 
 // Get Article by ID
-export const getArticleById = async (req, res, next) => {
+exports.getArticleById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const article = await Article.findById(id);
@@ -72,7 +72,7 @@ export const getArticleById = async (req, res, next) => {
 };
 
 // Update Article
-export const updateArticle = async (req, res, next) => {
+exports.updateArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { title, image, description } = req.body;
@@ -104,7 +104,7 @@ export const updateArticle = async (req, res, next) => {
 };
 
 // Delete Article
-export const deleteArticle = async (req, res, next) => {
+exports.deleteArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
 

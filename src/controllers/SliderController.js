@@ -1,8 +1,9 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
-import { ImageSlider } from "../models/ImageSlider";
+const express = require("express");
+const ImageSlider = require("../models/ImageSlider");
+
 
 // Create Slider Image
-export const createSliderImage = async (req, res, next) => {
+exports.createSliderImage = async (req, res, next) => {
     try {
       // Check if the file was uploaded
       if (!req.file) {
@@ -28,7 +29,7 @@ export const createSliderImage = async (req, res, next) => {
   };
 
 // Get all Slider Images
-export const getAllSliderImages = async (
+exports.getAllSliderImages = async (
     req,
     res,
     next
@@ -47,7 +48,7 @@ export const getAllSliderImages = async (
 };
 
 // Get Slider Image by ID
-export const getSliderImageById = async (
+exports.getSliderImageById = async (
     req,
     res,
     next
@@ -75,7 +76,7 @@ export const getSliderImageById = async (
 };
 
 // Update Slider Image
-export const updateSliderImage = async (
+exports.updateSliderImage = async (
     req,
     res,
     next
@@ -116,7 +117,7 @@ export const updateSliderImage = async (
 };
 
 // Delete Slider Image
-export const deleteSliderImage = async (
+exports.deleteSliderImage = async (
     req,
     res,
     next

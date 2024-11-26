@@ -1,19 +1,18 @@
-import { Router } from "express";
-import {
+const express = require("express");
+const {
   createArticle,
   getAllArticles,
   getArticleById,
   updateArticle,
   deleteArticle,
-} from "../controllers/articleController";
-import fs from "fs";
-import path from "path";
-import { uploadImage } from "../middleware/uploadfile";
+} = require("../controllers/ArticleController.js");
+const fs = require("fs");
+const path = require("path");
+const { uploadImage } = require("../middleware/uploadfile.js");
 
-const ArticlesRouter = Router();
-
+const ArticlesRouter = express.Router();
 // Ensure the directory exists
-const uploadPath = path.join(__dirname, "../uploads/articles");
+const uploadPath = path.join(__dirname, "../uploads/articles.js");
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }
@@ -27,4 +26,4 @@ ArticlesRouter.get("/articles/:id", getArticleById); // Get an article by ID
 ArticlesRouter.put("/articles/:id", updateArticle); // Update an article
 ArticlesRouter.delete("/articles/:id", deleteArticle); // Delete an article
 
-export default ArticlesRouter;
+module.exports = ArticlesRouter;
