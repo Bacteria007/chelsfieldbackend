@@ -1,16 +1,27 @@
 import { RequestHandler } from 'express';
 import { Article } from '../models/Aricle';
+import path from 'path';
 
 // Create Article
-export const createArticle: RequestHandler = async (req, res, next): Promise<void> => {
+export const createArticle = async (req, res, next) => {
   try {
-    const { title, image, description } = req.body;
+    const { title, description } = req.body;
 
-    if (!title || !image || !description) {
-      res.status(400).json({ success: false, message: 'All fields are required.' });
+    if (!title || !description) {
+      res.status(400).json({ success: false, message: 'Title and description are required.' });
       return;
     }
 
+    // Check if an image was uploaded
+    let image = null;
+    if (req.file) {
+      image = path.join('uploads/articles', req.file.filename); // Construct the file path
+    } else {
+      res.status(400).json({ success: false, message: 'Image is required.' });
+      return;
+    }
+
+    // Create the article with the image path
     const article = new Article({ title, image, description });
     await article.save();
 
@@ -25,7 +36,7 @@ export const createArticle: RequestHandler = async (req, res, next): Promise<voi
 };
 
 // Get All Articles
-export const getAllArticles: RequestHandler = async (req, res, next): Promise<void> => {
+export const getAllArticles = async (req, res, next) => {
   try {
     const articles = await Article.find();
 
@@ -40,7 +51,7 @@ export const getAllArticles: RequestHandler = async (req, res, next): Promise<vo
 };
 
 // Get Article by ID
-export const getArticleById: RequestHandler = async (req, res, next): Promise<void> => {
+export const getArticleById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const article = await Article.findById(id);
@@ -61,7 +72,7 @@ export const getArticleById: RequestHandler = async (req, res, next): Promise<vo
 };
 
 // Update Article
-export const updateArticle: RequestHandler = async (req, res, next): Promise<void> => {
+export const updateArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { title, image, description } = req.body;
@@ -93,7 +104,7 @@ export const updateArticle: RequestHandler = async (req, res, next): Promise<voi
 };
 
 // Delete Article
-export const deleteArticle: RequestHandler = async (req, res, next): Promise<void> => {
+export const deleteArticle = async (req, res, next) => {
   try {
     const { id } = req.params;
 
