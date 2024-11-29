@@ -7,7 +7,7 @@ const uploadImage = (uploadPath, fields = []) => {
     destination: function (req, file, cb) {
       if (file) {
         console.log('file is===>>>', file);
-        console.log('path is===>>>', uploadPath);
+        // console.log('path is===>>>', uploadPath);
         cb(null, uploadPath);
       } else {
         console.log('image is null');

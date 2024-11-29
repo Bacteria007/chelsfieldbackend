@@ -1,7 +1,7 @@
 const express = require("express");
-const path=require('path')
-const fs=require('fs')
+const fs = require("fs");
 const SliderRouter = express.Router();
+const { sliderImagePath } = require("../utils/constants");
 
 const {
   createSliderImage,
@@ -12,20 +12,29 @@ const {
 } = require("../controllers/SliderController");
 const { uploadImage } = require("../middleware/uploadfile");
 
-
 // Ensure the directory exists
-const uploadPath = path.join(__dirname, "../uploads/slider");
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
+if (!fs.existsSync(sliderImagePath)) {
+  fs.mkdirSync(sliderImagePath, { recursive: true });
 }
 
 // Middleware for image upload
-const uploadMiddleware = uploadImage(uploadPath);
+const uploadMiddleware = (req, res, next) => {
+  uploadImage(sliderImagePath, [{ name: "image", maxCount: 1 }])(req, res, (err) => {
+    if (err) {
+      if (err.code === "LIMIT_FILE_TYPES") {
+        return res.status(400).json({ message: err.message, success: false });
+      }
+      return res.status(500).json({ message: "File upload error", success: false });
+    }
+    next();
+  });
+};
 
-SliderRouter.post('/slider-image', uploadMiddleware,createSliderImage);
-SliderRouter.get('/slider', getAllSliderImages);
-SliderRouter.get('/slider/:id', getSliderImageById);
-SliderRouter.put('/slider/:id', updateSliderImage);
-SliderRouter.delete('/slider/:id', deleteSliderImage);
+// Routes
+SliderRouter.post("/upload-slider-image", uploadMiddleware, createSliderImage);
+SliderRouter.get("/get-slider-images", getAllSliderImages);
+SliderRouter.get("/slider/:id", getSliderImageById);
+SliderRouter.put("/slider/:id", updateSliderImage);
+SliderRouter.delete("/slider/:id", deleteSliderImage);
 
 module.exports = SliderRouter;
